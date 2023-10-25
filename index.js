@@ -1,59 +1,50 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-    const searchBox = document.getElementById("searchBox");
-    const searchButton = document.getElementById("searchButton");
-    const clearButton = document.getElementById("clearButton");
-    const results = document.getElementById("results");
+    const searchInput = document.getElementById("search-input");
+    const searchButton = document.getElementById("search-button");
+    const articleList = document.getElementById("article-list");
+    const articleDetails = document.getElementById("article-details");
+    const articleTitle = document.getElementById("article-title");
+    const articleContent = document.getElementById("article-content");
 
     searchButton.addEventListener("click", () => {
-        searchData();
-    });
-
-    clearButton.addEventListener("click", () => {
-        clearResults();
-    });
-
-    searchBox.addEventListener("keyup", (event) => {
-        if (event.key === "Enter") {
-            searchData();
+        const searchTerm = searchInput.value;
+        if (searchTerm.trim() === "") {
+            alert("Please enter a search term.");
+            return;
         }
-    });
+        //Clear previous results
+        articleList.innerHTML = "";
 
-    async function searchData() {
-        const searchTerm = searchBox.value;
-
-        if (searchTerm) {
-            // Define the API endpoint.
-            const apiUrl = `https://chroniclingamerica.loc.gov/search/titles/results/?terms=${encodeURIComponent(searchTerm)}&format=json`;
-
-            try {
-                // Fetch data from API asynchronously.
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                const limitedData = data.items.slice(0, 10);
-
-                // Process and display search results.
-                results.innerHTML = "";
-
-                limitedData.forEach(article => {
-                    const articleElement = document.createElement("div");
-                    articleElement.className = "article";
-                    articleElement.innerHTML = `
-                        <h2>${article.title}</h2>
-                        <p>Date: ${article.date}</p>
-                        <p>Place: ${article.place}</p>
-                    `;
-                    results.appendChild(articleElement);
+        // Use the Chronicling America API to fetch results
+        fetch(`https://chroniclingamerica.loc.gov/search/titles/results/?terms=${searchTerm}&format=json`)
+            .then((response) => response.json())
+            .then((data) => {
+                const titles = data.items;
+                titles.forEach((title) => {
+                    const titleName = title.title || "Title not available";
+                    const li = document.createElement("li");
+                    li.textContent = titleName;
+                    li.addEventListener("click", () => showArticleDetails(title.id));
+                    articleList.appendChild(li);
                 });
-            } catch (error) {
+            })
+            .catch((error) => {
                 console.error("Error fetching data:", error);
-            }
-        }
-    }
+            });
+    });
 
-    function clearResults() {
-        results.innerHTML = "";
-        searchBox.value = "";
+    function showArticleDetails(articleId) {
+        // Fetch article details using the article ID
+        fetch(`https://chroniclingamerica.loc.gov/lccn/${articleId}.json`)
+            .then((response) => response.json())
+            .then((data) => {
+                const article = data;
+                articleTitle.textContent = article.name || "Title not available";
+                articleContent.innerHTML = article.description || "Description not available";
+                articleDetails.classList.remove("hidden");
+            })
+            .catch((error) => {
+                console.error("Error fetching article details:", error);
+            });
     }
 });
