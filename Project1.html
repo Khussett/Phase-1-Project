@@ -1,29 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Newspaper Article Search</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Article Search</title>
 </head>
 <body>
-    <header>
-        <h1>Newspaper Article Search</h1>
-    </header>
-    <main>
-        <div id="search-container">
-            <input type="text" id="search-input" placeholder="Enter your search term">
-            <button id="search-button">Search</button>
-        </div>
-        <div id="results">
-            <h2>Search Results</h2>
-            <ul id="article-list"></ul>
-        </div>
-        <div id="article-details" class="hidden">
-            <h2>Article Details</h2>
-            <div id="article-title"></div>
-            <div id="article-content"></div>
-        </div>
-    </main>
+    <div class="container">
+        <h1>News Article Search</h1>
+        <input type="text" id="searchBox" placeholder="Search for newspaper articles">
+        <button id="searchButton">Search</button>
+        <button id="clearButton">Clear</button>
+        <div id="results"></div>
+    </div>
     <script src="index.js"></script>
 </body>
 </html>
