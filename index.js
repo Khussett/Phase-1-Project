@@ -19,18 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function searchData() {
-        const searchTerm = searchBox.value;
+        const searcWord = searchBox.value;
 
-        if (searchTerm) {
+        if (searchWords) {
             // Define the Chronicling America API endpoint.
-            const myUrl = `https://chroniclingamerica.loc.gov/search/titles/results/?terms=${encodeURIComponent(searchTerm)}&format=json`;
+            const myUrl = `https://chroniclingamerica.loc.gov/search/titles/results/?terms=${encodeURIComponent(searchWords)}&format=json`;
 
             try {
                 // Fetch data from the Chronicling America API asynchronously.
                 const response = await fetch(myUrl);
                 const data = await response.json();
 
-                const limitedData = data.items.slice(0, 5); // Retrieve at least 5 search results
+                const limitedData = data.items.slice(0, 10); // Retrieve at least 5 search results
 
                 // Process and display search results.
                 results.innerHTML = "";
