@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function searchData() {
-        const searcWord = searchBox.value;
+        const searchWords = searchBox.value;
 
         if (searchWords) {
             // Define the Chronicling America API endpoint.
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const response = await fetch(myUrl);
                 const data = await response.json();
 
-                const limitedData = data.items.slice(0, 10); // Retrieve at least 5 search results
+                const limitedData = data.items.slice(0, 10); // Retrieve at least 10 search results
 
                 // Process and display search results.
                 results.innerHTML = "";
@@ -39,8 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const articleElement = document.createElement("div");
                     articleElement.className = "article";
                     articleElement.innerHTML = `
-                        <h2>${article.title}</h2>
-                        <p>Date: ${article.date}</p>
+                        <h2>${article.title}</h2> 
                         <p>Place: ${article.place}</p>
                     `;
                     results.appendChild(articleElement);
