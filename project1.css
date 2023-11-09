@@ -3,6 +3,7 @@ body {
     background: url('https://wallpaperaccess.com/full/1558249.jpg');
     background-size: 1360px;
     background-repeat: repeat-y;
+    background-attachment: fixed;
     position: relative;
     margin: 0;
     padding: 0;
@@ -56,6 +57,7 @@ button {
     padding-bottom: .01px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
+    color: blue;
 }
 
 hr 
