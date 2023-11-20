@@ -1,57 +1,56 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const searchBox = document.getElementById("searchBox");
-    const searchButton = document.getElementById("searchButton");
-    const clearButton = document.getElementById("clearButton");
-    const results = document.getElementById("results");
+const accessKey = "Z7oxk6lYPk_CiqY9ahsva0vEYqPmfp2DQRo4zdMHwe8";
+const searchForm = document.getElementById("search-form");
+const searchBox = document.getElementById("search-box");
+const showMoreBtn = document.getElementById("show-more-btn");
+const searchResult = document.getElementById("search-result");
 
-    searchButton.addEventListener("click", () => {
-        searchData();
-    });
+let keyword = "";
+let page = 1;
 
-    clearButton.addEventListener("click", () => {
-        clearResults();
-    });
+async function searchImages() {
+keyword = searchBox.value;
+const url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${accessKey}&per_page=12`;
 
-    searchBox.addEventListener("keyup", (event) => {
-        if (event.key === "Enter") {
-            searchData();
-        }
-    });
+const response = await fetch(url);
+const data = await response.json();
 
-    async function searchData() {
-        const searchWords = searchBox.value;
+if(page === 1) {
+    searchResult.innerHTML = "";
+}
 
-        if (searchWords) {
-            // Define the Chronicling America API endpoint.
-            const myUrl = `https://chroniclingamerica.loc.gov/search/titles/results/?terms=${encodeURIComponent(searchWords)}&format=json`;
+const results = data.results;
 
-            try {
-                // Fetch data from the Chronicling America API asynchronously.
-                const response = await fetch(myUrl);
-                const data = await response.json();
+results.map((result) => {
+const image = document.createElement("img")
+image.src=result.urls.small;
+const imageLink = document.createElement("a");
+imageLink.href=result.links.html;
+imageLink.target = "_blank";
 
-                const limitedData = data.items.slice(0, 10); // Retrieve at least 10 search results
+imageLink.appendChild(image);
+searchResult.appendChild(imageLink);
+})
+showMoreBtn.style.display = "block";
+}
 
-                // Process and display search results.
-                results.innerHTML = "";
-
-                limitedData.forEach(article => {
-                    const articleElement = document.createElement("div");
-                    articleElement.className = "article";
-                    articleElement.innerHTML = `
-                        <h2>${article.title}</h2> 
-                        <p>Place: ${article.place}</p>
-                    `;
-                    results.appendChild(articleElement);
-                });
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        }
+searchBox.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      page = 1;
+      searchImages();
     }
+  });
 
-    function clearResults() {
-        results.innerHTML = "";
-        searchBox.value = "";
-    }
+searchForm.addEventListener("submit", (e) => {
+e.preventDefault();
+page = 1;
+searchImages();
 });
+
+showMoreBtn.addEventListener("click", ()=>{
+page++;
+searchImages();
+})
+
+
+  
