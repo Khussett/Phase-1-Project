@@ -29,7 +29,7 @@ Unsplash API: The Image Search Engine uses the Unsplash API to fetch image data.
 
 
 Image Search Engine
-This is a simple Image Search Engine that allows users to search for images using the Unsplash API. Users can enter a keyword in the search box, press the "Search" button, and view the results. Additionally, the "Show more" button allows users to load more images.
+This is a simple Image Search Engine that allows users to search for images using the Unsplash API. The search engine generates up to 12 results at a time. Users can enter a keyword in the search box, press the "Search" button, and view the results. Additionally, the "Show more" button allows users to load more images.
 
 Getting Started
 To use this Image Search Engine, follow these steps:
